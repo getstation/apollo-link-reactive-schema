@@ -9,7 +9,7 @@
 
 ```js
 import { ApolloClient } from 'apollo-client';
-import { from } from 'rxjs;
+import { from } from 'rxjs';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ReactiveSchemaLink } from 'apollo-link-reactive-schema';
 

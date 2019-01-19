@@ -14,11 +14,6 @@ export namespace ReactiveSchemaLink {
     schema: GraphQLSchema;
 
     /**
-     * The root value to use when generating responses.
-     */
-    rootValue?: any;
-
-    /**
      * A context to provide to resolvers declared within the schema.
      */
     context?: ResolverContextFunction<ContextType> | Record<string, any>;
@@ -30,14 +25,12 @@ const intersect = (array1: any[], array2: any[]) => array1.filter(value => -1 !=
 
 export class ReactiveSchemaLink<ContextType> extends ApolloLink {
   public schema: GraphQLSchema;
-  public rootValue: any;
   public context: ReactiveSchemaLink.ResolverContextFunction<ContextType> | any;
 
-  constructor({ schema, rootValue, context }: ReactiveSchemaLink.Options<ContextType>) {
+  constructor({ schema, context }: ReactiveSchemaLink.Options<ContextType>) {
     super();
 
     this.schema = schema;
-    this.rootValue = rootValue;
     this.context = context;
   }
 

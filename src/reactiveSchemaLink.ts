@@ -1,6 +1,6 @@
 import { ApolloLink, Operation, FetchResult, Observable } from 'apollo-link';
 import { GraphQLSchema } from 'graphql';
-import graphql from 'reactive-graphql';
+import { graphql } from 'reactive-graphql';
 
 export namespace ReactiveSchemaLink {
   export type ResolverContextFunction<ContextType> = (
@@ -20,9 +20,6 @@ export namespace ReactiveSchemaLink {
   }
 }
 
-// util
-const intersect = (array1: any[], array2: any[]) => array1.filter(value => -1 !== array2.indexOf(value));
-
 export class ReactiveSchemaLink<ContextType> extends ApolloLink {
   public schema: GraphQLSchema;
   public context: ReactiveSchemaLink.ResolverContextFunction<ContextType> | any;
@@ -39,24 +36,14 @@ export class ReactiveSchemaLink<ContextType> extends ApolloLink {
       try {
         const context = typeof this.context === 'function' ? this.context(operation) : this.context || {};
 
-        // reactive-graphql mixes variables and context
-        // see https://github.com/mesosphere/reactive-graphql/issues/6
-        // we we need to merge the vaiables in the context
-        // though let's throw an error if we end-up overiding a key
-        // already present on context
-        const { variables } = operation;
-        if (variables) {
-          const overridenKeys = intersect(Object.keys(variables), Object.keys(context));
-          if(overridenKeys.length > 0) {
-            throw new Error(`Variables overrides keys ${overridenKeys.map(k => `'${k}'`).join(',')} of context`);
-          }
-        }
-        const contextAndAriables = { ...context, ...variables };
-
         return graphql(
+          this.schema,
             operation.query,
-            this.schema,
-            contextAndAriables,
+            null,
+            context,
+            operation.variables,
+          // @ts-ignore issue with the typage of the `errors` key in reactive-graphql
+          // https://github.com/mesosphere/reactive-graphql/pull/11/files#r249788225
         ).subscribe(observer);
       } catch(e) {
         observer.error(e);

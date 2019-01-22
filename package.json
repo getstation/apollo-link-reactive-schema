@@ -19,7 +19,6 @@
     "clean": "rimraf lib/* && rimraf coverage/*",
     "coverage": "jest --coverage",
     "filesize": "npm run build && npm run build:browser",
-    "lint": "tslint --type-check -p tsconfig.json -c ../../tslint.json src/*.ts",
     "prebuild": "npm run clean",
     "prepublishOnly": "npm run clean && npm run build",
     "test": "jest",
@@ -30,7 +29,7 @@
   },
   "peerDependencies": {
     "graphql": "^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0",
-    "reactive-graphql": "^2.0.0",
+    "reactive-graphql": "^3.0.0",
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
@@ -46,7 +45,7 @@
     "tslint": "5.12.1",
     "typescript": "3.0.3",
     "uglify-js": "3.4.9",
-    "reactive-graphql": "^2.0.0",
+    "reactive-graphql": "^3.0.0",
     "rxjs": "^6.0.0"
   },
   "jest": {

@@ -1,12 +1,10 @@
 {
   "name": "apollo-link-reactive-schema",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Apollo Link that provides a reactive-graphql execution environment to perform operations on a provided reactive schema.",
   "license": "MIT",
-  "main": "./lib/bundle.umd.js",
-  "module": "./lib/index.js",
-  "jsnext:main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/getstation/apollo-link-reactive-schema.git"

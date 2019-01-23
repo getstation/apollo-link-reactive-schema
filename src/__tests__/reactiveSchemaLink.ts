@@ -1,9 +1,24 @@
-import {  execute } from 'apollo-link';
+import { execute, Observable } from 'apollo-link';
 import { from } from "rxjs";
 import { makeExecutableSchema } from 'graphql-tools';
 import gql from 'graphql-tag';
+import { graphql } from 'graphql';
 
 import { ReactiveSchemaLink } from '../reactiveSchemaLink';
+
+/**
+ * Take an Observable and return a Promise that is resolved with and on the
+ * first value emited.
+ */
+function toPromise<T>(obs: Observable<T>): Promise<T> {
+  return new Promise((resolve, reject) => {
+    obs.subscribe({
+      next: resolve,
+      error: reject,
+    })
+  })
+}
+
 
 const sampleQuery = gql`
   query SampleQuery {
@@ -98,27 +113,6 @@ describe('ReactiveSchemaLink', () => {
     });
   });
 
-  it('calls error when fetch fails', done => {
-    const badTypeDefs = 'type Query {}';
-    const badSchema = makeExecutableSchema({ typeDefs });
-
-    const link = new ReactiveSchemaLink({ schema: badSchema });
-    const observable = execute(link, {
-      query: sampleQuery,
-    });
-    observable.subscribe(
-      result => expect(false),
-      error => {
-        expect(error).toBeDefined();
-        done();
-      },
-      () => {
-        expect(false);
-        done();
-      },
-    );
-  });
-
   it('pass down variables', done => {
     const next = jest.fn();
     const sampleQueryWithArgsResolver = jest.fn()
@@ -182,4 +176,26 @@ describe('ReactiveSchemaLink', () => {
       },
     });
   });
+
+
+  it('adds an error in erros when a resolver fail', async () => {
+    const resolvers = {
+      Query: {
+        sampleQuery: (root, args, context) => {
+          throw new Error('Bip bip');
+        }
+      }
+    }
+    const schema = makeExecutableSchema({
+      typeDefs,
+      resolvers
+    });
+
+    const link = new ReactiveSchemaLink({ schema });
+    const results = await toPromise(execute(link, {
+      query: sampleQuery,
+    }));
+    
+    expect(results.errors).toHaveLength(1);
+  })
 });

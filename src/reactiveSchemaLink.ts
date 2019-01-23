@@ -62,6 +62,8 @@ export class ReactiveSchemaLink<ContextType> extends ApolloLink {
             context,
             operation.variables,
         )
+        // reactive-graphql does not necessarely leverage the errors key (https://github.com/mesosphere/reactive-graphql/issues/13)
+        // so we do it ourself
         .pipe(catchError((error: Error) => of({errors: [new GraphQLError(error.message)] })))
         .pipe(map(normalizeErrorsField))
         .subscribe(observer);

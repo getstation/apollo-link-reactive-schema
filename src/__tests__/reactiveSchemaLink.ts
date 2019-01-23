@@ -2,7 +2,6 @@ import { execute, Observable } from 'apollo-link';
 import { from } from "rxjs";
 import { makeExecutableSchema } from 'graphql-tools';
 import gql from 'graphql-tag';
-import { graphql } from 'graphql';
 
 import { ReactiveSchemaLink } from '../reactiveSchemaLink';
 

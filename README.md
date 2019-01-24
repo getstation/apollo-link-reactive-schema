@@ -12,6 +12,7 @@ import { ApolloClient } from 'apollo-client';
 import { from } from 'rxjs';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ReactiveSchemaLink } from 'apollo-link-reactive-schema';
+import { gql } from 'graphql-tag';
 
 import schema from './path/to/your/schema';
 
@@ -22,6 +23,17 @@ const graphqlClient = new ApolloClient({
   // see https://github.com/apollographql/apollo-client/issues/4322
   queryDeduplication: false
 });
+
+const query = gql`
+  # don't forget the @live directive, otherwise you'll experience
+  # difficulties with subscription>unsubscription>subscription
+  query @live {
+    someReactiveField
+  }
+`;
+
+const $res = graphqlClient.watchQuery({ query });
+$res.subscribe(res => console.log(res));
 ```
 
 ### Options

@@ -68,7 +68,9 @@ export class ReactiveSchemaLink<ContextType> extends ApolloLink {
         .pipe(map(normalizeErrorsField))
         .subscribe(observer);
       } catch(e) {
-        observer.next({ errors: [new GraphQLError(e.mesage)]});
+        if (e instanceof Error) {
+          observer.next({ errors: [new GraphQLError(e.message)]});
+        } else throw e;
       }
     });
   }

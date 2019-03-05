@@ -1,3 +1,8 @@
+# Difference with apollo-link-reactive-schema
+Requires `@getstation/reactive-schema` instead of `reactive-schema`.
+
+See differences with [`mesosphere/reactive-graphql](https://github.com/getstation/reactive-graphql#differences-with-mesospherereactive-graphql)
+
 # apollo-link-reactive-schema
 > Apollo Link that provides a [reactive-graphql execution environment](https://github.com/mesosphere/reactive-graphql) to perform operations on a provided reactive schema.
 

@@ -1,6 +1,6 @@
 import { ApolloLink, Operation, FetchResult, Observable } from 'apollo-link';
 import { GraphQLSchema, GraphQLError } from 'graphql';
-import { graphql } from 'reactive-graphql';
+import { graphql } from '@getstation/reactive-graphql';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 

@@ -1,6 +1,6 @@
 {
   "name": "@getstation/apollo-link-reactive-schema",
-  "version": "2.1.2",
+  "version": "1.0.0",
   "description": "Apollo Link that provides a reactive-graphql execution environment to perform operations on a provided reactive schema.",
   "license": "MIT",
   "main": "./lib/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@getstation/apollo-link-reactive-schema",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Apollo Link that provides a reactive-graphql execution environment to perform operations on a provided reactive schema.",
   "license": "MIT",
   "main": "./lib/index.js",
@@ -26,25 +26,23 @@
     "apollo-link": "^1.2.6"
   },
   "peerDependencies": {
-    "graphql": "^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0",
-    "@getstation/reactive-graphql": "^3.0.1",
+    "reactive-graphql": "^4.0.1",
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
     "@types/graphql": "14.0.4",
     "@types/jest": "22.2.3",
     "browserify": "16.2.3",
-    "graphql": "14.0.2",
     "graphql-tag": "2.10.0",
     "graphql-tools": "2.24.0",
     "jest": "22.4.4",
+    "reactive-graphql": "^4.0.1",
     "rimraf": "2.6.3",
+    "rxjs": "^6.0.0",
     "ts-jest": "22.4.6",
     "tslint": "5.12.1",
     "typescript": "3.0.3",
-    "uglify-js": "3.4.9",
-    "@getstation/reactive-graphql": "^3.0.1",
-    "rxjs": "^6.0.0"
+    "uglify-js": "3.4.9"
   },
   "jest": {
     "transform": {

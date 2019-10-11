@@ -1,4 +1,6 @@
 # apollo-link-reactive-schema
+[![npm version](https://badge.fury.io/js/apollo-link-reactive-schema.svg)](https://badge.fury.io/js/apollo-link-reactive-schema)
+
 > Apollo Link that provides a [reactive-graphql execution environment](https://github.com/mesosphere/reactive-graphql) to perform operations on a provided reactive schema.
 
 ## Installation

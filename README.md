@@ -19,9 +19,6 @@ import schema from './path/to/your/schema';
 const graphqlClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: new ReactiveSchemaLink({ schema }),
-  // without this option watchQuery won't be streaming
-  // see https://github.com/apollographql/apollo-client/issues/4322
-  queryDeduplication: false
 });
 
 const query = gql`

@@ -1,8 +1,6 @@
 import { ApolloLink, Operation, FetchResult, Observable } from 'apollo-link';
-import { GraphQLSchema, GraphQLError } from 'graphql';
-import { graphql } from 'reactive-graphql';
-import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { GraphQLSchema } from 'graphql';
+import { execute } from 'reactive-graphql';
 
 export namespace ReactiveSchemaLink {
   export type ResolverContextFunction<ContextType> = (
@@ -22,23 +20,6 @@ export namespace ReactiveSchemaLink {
   }
 }
 
-// will transform the errors of the execution results provided by
-// reactive-graphql in proper GraphQLErrors
-function normalizeErrorsField(results: {data?: object, errors?: string[]}): FetchResult<object> {
-  const _results: FetchResult<object> = {};
-  _results.data = results.data;
-  if (results.errors) {
-    _results.errors = results.errors.map(message => {
-      // @ts-ignore just to be sure, message could be an instance of error
-      if (typeof message.message === 'string') {
-        // @ts-ignore 
-        return new GraphQLError(message.message);
-      }
-      return new GraphQLError(message);
-    });
-  }
-  return _results;
-}
 export class ReactiveSchemaLink<ContextType> extends ApolloLink {
   public schema: GraphQLSchema;
   public context: ReactiveSchemaLink.ResolverContextFunction<ContextType> | any;
@@ -52,26 +33,17 @@ export class ReactiveSchemaLink<ContextType> extends ApolloLink {
 
   public request(operation: Operation): Observable<FetchResult> | null {
     return new Observable<FetchResult>(observer => {
-      try {
-        const context = typeof this.context === 'function' ? this.context(operation) : this.context || {};
+      const context = typeof this.context === 'function' ? this.context(operation) : this.context || {};
+      const { schema } = this;
+      const { query, variables } = operation;
 
-        return graphql(
-          this.schema,
-            operation.query,
-            null,
-            context,
-            operation.variables,
-        )
-        // reactive-graphql does not necessarely leverage the errors key (https://github.com/mesosphere/reactive-graphql/issues/13)
-        // so we do it ourself
-        .pipe(catchError((error: Error) => of({errors: [new GraphQLError(error.message)] })))
-        .pipe(map(normalizeErrorsField))
-        .subscribe(observer);
-      } catch(e) {
-        if (e instanceof Error) {
-          observer.next({ errors: [new GraphQLError(e.message)]});
-        } else throw e;
-      }
+      return execute({
+        schema: schema,
+        document: query,
+        contextValue: context,
+        variableValues: variables,
+      })
+      .subscribe(observer);
     });
   }
 }
